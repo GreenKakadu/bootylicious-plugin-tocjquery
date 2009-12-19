@@ -1,0 +1,14 @@
+---
+abstract: 'load TOC (Table of Contents) jQuery plugin.'
+author:
+  - 'Konstantin Kapitanov <perlovik@gmail.com>'
+generated_by: 'Dist::Zilla version 1.093250'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Bootylicious-Plugin-TocJquery
+requires:
+  Bootylicious::Plugin::AjaxLibLoader: 0.04
+  Mojo: 0.999910
+version: 0.04
