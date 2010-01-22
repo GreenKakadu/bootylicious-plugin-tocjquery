@@ -1,5 +1,8 @@
 Revision history for Bootylicious::Plugin::TocJquery
 
+0.05 21-01-2010
+	Using Mojolicious::Plugin system now
+	
 0.04 19-12-2009
 	Prepared for CPAN
 	Fix documentation

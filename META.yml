@@ -9,6 +9,6 @@ meta-spec:
   version: 1.4
 name: Bootylicious-Plugin-TocJquery
 requires:
-  Bootylicious::Plugin::AjaxLibLoader: 0.04
+  Bootylicious::Plugin::AjaxLibLoader: 0.05
   Mojo: 0.999910
-version: 0.04
+version: 0.05

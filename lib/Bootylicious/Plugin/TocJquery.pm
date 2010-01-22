@@ -1,37 +1,48 @@
 package Bootylicious::Plugin::TocJquery;
-
 use strict;
 use warnings;
+use base 'Mojolicious::Plugin';
 
-use base 'Mojo::Base';
-
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 __PACKAGE__->attr('toc_tag' => '%TOC%');
 __PACKAGE__->attr('toc_js_src' =>
       'http://samaxesjs.googlecode.com/files/jquery.toc-1.0.2.min.js');
 __PACKAGE__->attr('toc_exclude' => 'h1,#descr,#title,#footer,#nottoc');
 
-sub hook_finalize {
-    my $self = shift;
-    my $c    = shift;
 
-    my $path    = $c->req->url->path;
-    my $body    = $c->res->body;
-    my $toc_tag = $self->toc_tag;
-
-    #cleanup %TOC% if not article
-    if ($path !~ /^\/articles/) {
-        $body =~ s/$toc_tag//g;
-        $c->res->body($body);
-        return;
+sub register {
+    my ($self, $app, $args) = @_;
+    $args ||= {};
+    $self->toc_tag($args->{'toc_tag'} ) if $args->{'toc_tag'};
+    $self->toc_js_src($args->{'toc_js_src'} ) if $args->{'toc_js_src'};
+    $self->toc_exclude($args->{'toc_exclude'} ) if $args->{'toc_exclude'};
+    
+    $app->plugins->add_hook(after_dispatch => sub {
+		    	shift;#Skip Mojolicious::Plugins obj
+		    	my $c    = shift;
+			    my $path    = $c->req->url->path;
+			    my $body    = $c->res->body;
+		    	my $toc_tag = $self->toc_tag;
+		
+			    #cleanup %TOC% if not article
+			    if ($path !~ /^\/articles/) {
+			        $body =~ s/$toc_tag//g;
+			        $c->res->body($body);
+			        return;
+			    }
+			
+			    my $toc_div = $self->_toc_div;
+			    my $toc_js  = $self->_toc_js;
+			    $body =~ s/<\/[hH][eE][aA][dD]>/$toc_js <\/head>/;
+			    $body =~ s/$toc_tag/$toc_div/;
+			    $c->res->body($body);
+    	
     }
-
-    my $toc_div = $self->_toc_div;
-    my $toc_js  = $self->_toc_js;
-    $body =~ s/<\/[hH][eE][aA][dD]>/$toc_js <\/head>/;
-    $body =~ s/$toc_tag/$toc_div/;
-    $c->res->body($body);
+    
+    
+    
+    );
 }
 
 sub _toc_div {
@@ -70,7 +81,7 @@ The TOC plugin dynamically builds a table of contents from the headings in a doc
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
 
@@ -135,10 +146,12 @@ exlude option, see more here L<http://code.google.com/p/samaxesjs/wiki/TableOfCo
 
 
 =head1 METHODS
+
+=head2 C<register>
  
-=head2 C<hook_finalize>
- 
-Plugin is run just after L<bootylicious> routes finalization.    
+This method will be called by L<Mojolicious::Plugins> at startup time,
+your plugin should use this to hook into the application.  
+
 
 =head1 AUTHOR
 
