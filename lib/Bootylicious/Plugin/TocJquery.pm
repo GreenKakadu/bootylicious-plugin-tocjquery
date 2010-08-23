@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use base 'Mojolicious::Plugin';
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 __PACKAGE__->attr('toc_tag' => '%TOC%');
 __PACKAGE__->attr('toc_js_src' =>
@@ -81,7 +81,7 @@ The TOC plugin dynamically builds a table of contents from the headings in a doc
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 SYNOPSIS
 
@@ -90,7 +90,7 @@ like this:
 
    "plugins" : [
 		 "ajax_lib_loader" , {"jquery" : "on"},
-		 "toc_jquery", {"toc_tag"="%TOC%"}
+		 "toc_jquery", {"toc_tag" : "%TOC%"}
 	]
 	
  Insert into your post tag %TOC%, e.g.:
@@ -142,7 +142,7 @@ URL to TOC jQuery plugin library
 
 exlude option, see more here L<http://code.google.com/p/samaxesjs/wiki/TableOfContentsPlugin>
 
-    default: 'h1,#descr,#title,#footer,#nottoc'
+    default: "h1,#descr,#title,#footer,#nottoc"
 
 
 =head1 METHODS
